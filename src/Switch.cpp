@@ -24,11 +24,7 @@ bool Switch::handle()
   }
   else 
   {
-    SwState_t input = switchOff;
-    if (DigitalIn.getBit(_mux, _pin))
-    {
-      input = switchOn;
-    }
+    SwState_t input = (DigitalIn.getBit(_mux, _pin) ? switchOn : switchOff);
     if (input != _state)
     {
       _debounce = DEBOUNCE_DELAY;
@@ -38,28 +34,6 @@ bool Switch::handle()
     }
   }
   return false;
-}
-
-void Switch::setCommand(int cmdOn, int cmdOff)
-{
-  _cmdOn = cmdOn;
-  _cmdOff = cmdOff;
-}
-
-int Switch::getCommand()
-{
-  switch (_state)
-  {
-  case switchOff:
-    return _cmdOff;
-    break;
-  case switchOn:
-    return _cmdOn;
-    break;
-  default:
-    return -1;
-    break;
-  }
 }
 
 void Switch::processCommand()
@@ -89,15 +63,10 @@ bool Switch2::handle()
   }
   else
   {
-    SwState_t input = switchOff;
-    if (DigitalIn.getBit(_mux, _pin))
-    {
-      input = switchOn;
-    }
-    else if (DigitalIn.getBit(_mux, _pin2))
-    {
-      input = switchOn2;
-    }
+    SwState_t input;
+    input = (DigitalIn.getBit2(_mux, _pin2) ? switchOn2 : switchOff);
+    input = (DigitalIn.getBit(_mux, _pin)   ? switchOn  : input);
+    
     if (input != _state)
     {
       _debounce = DEBOUNCE_DELAY;
@@ -110,31 +79,24 @@ bool Switch2::handle()
   return false;
 }
 
-void Switch2::setCommand(int cmdOn, int cmdOff, int cmdOn2, int cmdOff2)
-{
-  _cmdOn = cmdOn;
-  _cmdOff = cmdOff;
-  _cmdOn2 = cmdOn2;
-  _cmdOff2 = cmdOff2;
-}
-
 int Switch2::getCommand()
 {
+  int res = -1;
   if (_state == switchOn)
   {
-    return _cmdOn;
-  }
-  if (_state == switchOff && _lastState == switchOn)
+    res = _cmdOn;
+  } 
+  else if (_state == switchOff && _lastState == switchOn)
   {
-    return _cmdOff;
+    res = _cmdOff;
   }
-  if (_state == switchOff && _lastState == switchOn2)
+  else if (_state == switchOff && _lastState == switchOn2)
   {
-    return _cmdOff2;
+    res = _cmdOff2;
   }
-  if (_state == switchOn2)
+  else if (_state == switchOn2)
   {
-    return _cmdOn2;
+    res = _cmdOn2;
   }
-  return -1;
+  return res;
 }
