@@ -38,15 +38,15 @@ void Encoder::handle()
   {
     _count++;
   }
-  if (_state == 2 || _state == 4 || _state == 11 || _state == 13)
+  else if (_state == 2 || _state == 4 || _state == 11 || _state == 13)
   {
     _count--;
   }
-  if (_state == 3 || _state == 12)
+  else if (_state == 3 || _state == 12)
   {
     _count += 2;
   }
-  if (_state == 6 || _state == 9)
+  else if (_state == 6 || _state == 9)
   {
     _count -= 2;
   }

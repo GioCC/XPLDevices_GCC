@@ -24,39 +24,13 @@ void Switch::handle()
   }
   else 
   {
-    SwState_t input = switchOff;
-    if (DigitalIn.getBit(_mux, _pin))
-    {
-      input = switchOn;
-    }
+    SwState_t input = (DigitalIn.getBit(_mux, _pin) ? switchOn : switchOff);
     if (input != _state)
     {
       _debounce = DEBOUNCE_DELAY;
       _state = input;
       _transition = true;
     }
-  }
-}
-
-void Switch::setCommand(int cmdOn, int cmdOff)
-{
-  _cmdOn = cmdOn;
-  _cmdOff = cmdOff;
-}
-
-int Switch::getCommand()
-{
-  switch (_state)
-  {
-  case switchOff:
-    return _cmdOff;
-    break;
-  case switchOn:
-    return _cmdOn;
-    break;
-  default:
-    return -1;
-    break;
   }
 }
 
@@ -129,41 +103,44 @@ void Switch2::setCommand(int cmdOn1, int cmdOff, int cmdOn2)
 
 int Switch2::getCommand()
 {
+  int res = -1;
+  // One-pos switch
   if (_cmdOn2 == -1)
   {
     if (_state == switchOn1)
     {
-      return _cmdOn1;
+      res = _cmdOn1;
     }
     if (_state == switchOff && _lastState == switchOn1)
     {
-      return _cmdOff;
+      res = _cmdOff;
     }
     if (_state == switchOn2)
     {
-      return _cmdOff;
+      res = _cmdOff;
     }
     if (_state == switchOff && _lastState == switchOn2)
     {
-      return _cmdOn1;
+      res = _cmdOn1;
     }
   }
   else
+  // Two-pos switch
   {
     if (_state == switchOn1)
     {
-      return _cmdOn1;
+      res = _cmdOn1;
     }
     if (_state == switchOff)
     {
-      return _cmdOff;
+      res = _cmdOff;
     }
     if (_state == switchOn2)
     {
-      return _cmdOn2;
+      res = _cmdOn2;
     }
   }
-  return -1;
+  return res;
 }
 
 void Switch2::processCommand()
