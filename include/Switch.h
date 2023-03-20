@@ -23,20 +23,20 @@ public:
 
   /// @brief Check whether Switch set to on
   /// @return true: Switch is on
-  bool on()       { return _state == switchOn; };
+  bool isOn()       { return _state == switchOn; };
   
   /// @brief Check whether Switch set to off
   /// @return true: Switch is off
-  bool off()      { return _state == switchOff; };
+  bool isOff()      { return _state == switchOff; };
   
   /// @brief Set XPLDirect commands for Switch events
   /// @param cmdOn Command handle for Switch moved to on as returned by XP.registerCommand()
   /// @param cmdOff Command handle for Switch moved to off as returned by XP.registerCommand()
-  void setCommand(int cmdOn, int cmdOff);
+  void setCommand(int cmdOn, int cmdOff) { _cmdOn = cmdOn; _cmdOff = cmdOff; };
   
   /// @brief Get XPLDirect command for last transition of Switch
   /// @return Handle of the last command
-  int getCommand();
+  int getCommand() { return  (_state == switchOn ? _cmdOn : _cmdOff); };
   
   /// @brief Process all transitions to XPLDirect
   void processCommand();
@@ -85,26 +85,28 @@ public:
 
   /// @brief Check whether Switch set to off
   /// @return true: Switch is off
-  bool off()      { return _state == switchOff; };
+  bool isOff()      { return _state == switchOff; };
 
   /// @brief Check whether Switch set to on1
   /// @return true: Switch is on1
-  bool on1()      { return _state == switchOn1; };
+  bool isOn1()      { return _state == switchOn1; };
 
   /// @brief Check whether Switch set to on2
   /// @return true: Switch is on2
-  bool on2()      { return _state == switchOn2; };
+  bool isOn2()      { return _state == switchOn2; };
 
   /// @brief Set XPLDirect commands for Switch events in cases only up/down commands are to be used
   /// @param cmdUp Command handle for Switch moved from on1 to off or from off to on2 on as returned by XP.registerCommand()
   /// @param cmdDown Command handle for Switch moved from on2 to off or from off to on1 on as returned by XP.registerCommand()
-  void setCommand(int cmdUp, int cmdDown);
+  void setCommand(int cmdUp, int cmdDown)
+      { _cmdOn1 = cmdUp; _cmdOff = cmdDown; _cmdOn2 = -1};
   
   /// @brief Set XPLDirect commands for Switch events in cases separate events for on1/off/on2 are to be used
   /// @param cmdOn1 Command handle for Switch moved to on1 position as returned by XP.registerCommand()
   /// @param cmdOff Command handle for Switch moved to off position as returned by XP.registerCommand()
   /// @param cmdOn2 Command handle for Switch moved to on2 position as returned by XP.registerCommand()
-  void setCommand(int cmdOn1, int cmdOff, int cmdOn2);
+  void setCommand(int cmdOn1, int cmdOff, int cmdOn2)
+  	  { _cmdOn1 = cmdOn1; _cmdOff = cmdOff; _cmdOn2 = cmdOn2; }
 
   /// @brief Get XPLDirect command for last transition of Switch
   /// @return Handle of the last command
