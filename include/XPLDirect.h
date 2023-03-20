@@ -9,6 +9,8 @@
 #ifndef XPLDirect_h
 #define XPLDirect_h
 
+#include <Arduino.h>
+
 #ifndef XPLDIRECT_MAXDATAREFS_ARDUINO
 #define XPLDIRECT_MAXDATAREFS_ARDUINO 100 // This can be changed to suit your needs and capabilities of your board.
 #endif
