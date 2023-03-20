@@ -1,5 +1,6 @@
 #ifndef Switch_h
 #define Switch_h
+#include <Arduino.h>
 #include <DigitalIn.h>
 
 /// @brief Class for a simple on/off switch with debouncing and XPLDirect command handling.
@@ -45,7 +46,7 @@ public:
   /// @param onValue Value to return when Switch is set to on
   /// @param offValue Value to return when Switch is set to off
   /// @return Returned value
-  float value(float onValue, float offValue) { return on() ? onValue : offValue; };
+  float value(float onValue, float offValue) { return isOn() ? onValue : offValue; };
 
 private:
   enum SwState_t
@@ -98,14 +99,16 @@ public:
   /// @brief Set XPLDirect commands for Switch events in cases only up/down commands are to be used
   /// @param cmdUp Command handle for Switch moved from on1 to off or from off to on2 on as returned by XP.registerCommand()
   /// @param cmdDown Command handle for Switch moved from on2 to off or from off to on1 on as returned by XP.registerCommand()
-  void setCommand(int cmdUp, int cmdDown);
+  void setCommand(int cmdUp, int cmdDown)
+      { _cmdOn1 = cmdUp; _cmdOff = cmdDown; _cmdOn2 = -1; };
   
   /// @brief Set XPLDirect commands for Switch events in cases separate events for on1/off/on2 are to be used
   /// @param cmdOn1 Command handle for Switch moved to on1 position as returned by XP.registerCommand()
   /// @param cmdOff Command handle for Switch moved to off position as returned by XP.registerCommand()
   /// @param cmdOn2 Command handle for Switch moved to on2 position as returned by XP.registerCommand()
   void setCommand(int cmdOn1, int cmdOff, int cmdOn2)
-	  { _cmdOn = cmdOn; _cmdOff = cmdOff; _cmdOn2 = cmdOn2; _cmdOff2 = cmdOff2; }
+  	  { _cmdOn1 = cmdOn1; _cmdOff = cmdOff; _cmdOn2 = cmdOn2; }
+
   /// @brief Get XPLDirect command for last transition of Switch
   /// @return Handle of the last command
   int getCommand();
@@ -118,7 +121,7 @@ public:
   /// @param offValue Value to return when Switch is set to off
   /// @param on2Value Value to return when Switch is set to on2
   /// @return Returned value
-  float value(float on1Value, float offValue, float on2value) { return (on1() ? on1Value : on2() ? on2value : offValue); };
+  float value(float on1Value, float offValue, float on2value) { return (isOn1() ? on1Value : isOn2() ? on2value : offValue); };
 
 private:
   enum SwState_t

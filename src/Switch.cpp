@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <XPLDirect.h>
 #include "Switch.h"
 
@@ -85,20 +84,6 @@ void Switch2::handle()
       _transition = true;
     }
   }
-}
-
-void Switch2::setCommand(int cmdUp, int cmdDown)
-{
-  _cmdOn1 = cmdUp;
-  _cmdOff = cmdDown;
-  _cmdOn2 = -1;
-}
-
-void Switch2::setCommand(int cmdOn1, int cmdOff, int cmdOn2)
-{
-  _cmdOn1 = cmdOn1;
-  _cmdOff = cmdOff;
-  _cmdOn2 = cmdOn2;
 }
 
 int Switch2::getCommand()
