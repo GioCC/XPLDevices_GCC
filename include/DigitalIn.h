@@ -35,6 +35,10 @@ public:
   /// @param s3 Adress pin s3
   void setMux(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3);
   
+  /// @brief Set multiplexer channel.
+  /// @param ch Channel number (0..15)
+  void setMuxChannel(uint8_t ch);
+  
   /// @brief Add one 74HC4067 multiplexer
   /// @param pin Data pin the mux is connected to
   /// @return true when successful, false when all mux have been used up (increase MUX_MAX_NUMBER)
@@ -57,6 +61,11 @@ public:
   void handle();
 private:
   uint8_t _s0, _s1, _s2, _s3;
+#ifdef ARDUINO_ARCH_AVR
+  uint8_t _S0port, _S1port, _S2port, _S3port;
+  uint8_t _S0mask, _S1mask, _S2mask, _S3mask;
+#endif
+
   uint8_t _numPins;
   uint8_t _pin[MUX_MAX_NUMBER + MCP_MAX_NUMBER];
   int16_t _data[MUX_MAX_NUMBER + MCP_MAX_NUMBER];
