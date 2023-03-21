@@ -7,12 +7,12 @@
 class Switch
 {
 public:
-  /// @brief Constructor. Connect the switch to a pin on a mux.
-  /// @param mux mux number (from DigitalIn initialization order)
-  /// @param muxpin pin on the mux (0-15)
-  Switch(uint8_t mux, uint8_t pin);
+  /// @brief Constructor. Connect the switch to an expander channel (can also be used for a direct pin).
+  /// @param nExp expander number (from DigitalIn initialization order)
+  /// @param nChannel channel on the expander (0-15)
+  Switch(uint8_t nExp, uint8_t nChannel);
 
-  /// @brief Constructor, set digital input without mux 
+  /// @brief Constructor, Connect the switch to a direct pin 
   /// @param pin Arduino pin number
   Switch(uint8_t pin) : Switch (NOT_USED, pin) {};
   
@@ -67,13 +67,13 @@ private:
 class Switch2
 {
 public:
-  /// @brief Constructor. Connect the switch to pins on a mux.
-  /// @param mux mux number (from DigitalIn initialization order)
-  /// @param pin1 on1 pin on the mux (0-15)
-  /// @param pin1 on2 pin on the mux (0-15)
-  Switch2(uint8_t mux, uint8_t pin1, uint8_t pin2);
+  /// @brief Constructor. Connect the switch to two expander channels.
+  /// @param nExp expander number (from DigitalIn initialization order)
+  /// @param nChannel1 channel on the expander (0-15) for "on1" switch terminal
+  /// @param nChannel2 channel on the expander (0-15) for "on2" switch terminal
+  Switch2(uint8_t nExp, uint8_t nChannel1, uint8_t nChannel2);
 
-  /// @brief Constructor, set digital input pins without mux 
+  /// @brief Constructor, Connect the switch to two direct pins
   /// @param pin1 on1 Arduino pin number 
   /// @param pin2 on2 Arduino pin number 
   Switch2(uint8_t pin1, uint8_t pin2) : Switch2(NOT_USED, pin1, pin2) {}

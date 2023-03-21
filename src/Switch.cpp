@@ -5,9 +5,9 @@
 #define DEBOUNCE_DELAY 20
 #endif
 
-Switch::Switch(uint8_t mux, uint8_t pin)
+Switch::Switch(uint8_t nExp, uint8_t pin)
 {
-  _nExp = mux;
+  _nExp = nExp;
   _pin = pin;
   _state = switchOff;
   _cmdOff = -1;
@@ -44,9 +44,9 @@ void Switch::processCommand()
 
 // Switch 2
 
-Switch2::Switch2(uint8_t mux, uint8_t pin1, uint8_t pin2)
+Switch2::Switch2(uint8_t nExp, uint8_t pin1, uint8_t pin2)
 {
-  _nExp = mux;
+  _nExp = nExp;
   _pin1 = pin1;
   _pin2 = pin2;
   _state = switchOff;
@@ -95,15 +95,15 @@ int Switch2::getCommand()
     if (_state == switchOn1)
     {
       res = _cmdOn1;
-    }
+    } else
     if (_state == switchOff && _lastState == switchOn1)
     {
       res = _cmdOff;
-    }
+    } else
     if (_state == switchOn2)
     {
       res = _cmdOff;
-    }
+    } else
     if (_state == switchOff && _lastState == switchOn2)
     {
       res = _cmdOn1;
@@ -115,11 +115,11 @@ int Switch2::getCommand()
     if (_state == switchOn1)
     {
       res = _cmdOn1;
-    }
+    } else
     if (_state == switchOff)
     {
       res = _cmdOff;
-    }
+    } else
     if (_state == switchOn2)
     {
       res = _cmdOn2;

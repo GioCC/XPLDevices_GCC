@@ -6,9 +6,9 @@
 #endif
 
 // Buttons
-Button::Button(uint8_t mux, uint8_t pin)
+Button::Button(uint8_t nExp, uint8_t pin)
 {
-  _nExp = mux;
+  _nExp = nExp;
   _pin = pin;
   _state = 0;
   _transition = 0;
@@ -48,7 +48,7 @@ void Button::processCommand()
   }
 }
 
-RepeatButton::RepeatButton(uint8_t mux, uint8_t pin, uint32_t delay) : Button(mux, pin)
+RepeatButton::RepeatButton(uint8_t nExp, uint8_t pin, uint32_t delay) : Button(nExp, pin)
 {
   _delay = delay;
   _timer = 0;

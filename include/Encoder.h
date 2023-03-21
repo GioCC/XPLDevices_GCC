@@ -23,17 +23,17 @@ class Encoder
 {
 public:
   /// @brief Constructor. Sets connected pins and number of counts per notch.
-  /// @param mux mux number (from DigitalIn initialization order)
+  /// @param nExp expander number (from initialization order)
   /// @param pin1 pin for Encoder A track
   /// @param pin2 pin for Encoder B track
-  /// @param pin3 pin for encoder push function (NOT_USED if not connected)
+  /// @param pin3 pin for Encoder push function (NOT_USED if not connected)
   /// @param pulses Number of counts per mechanical notch
-  Encoder(uint8_t mux, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses);
+  Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses);
 
   /// @brief Constructor. Sets connected pins and number of counts per notch.
   /// @param pin1 pin for Encoder A track
   /// @param pin2 pin for Encoder B track
-  /// @param pin3 pin for encoder push function (NOT_USED if not connected)
+  /// @param pin3 pin for Encoder push function (NOT_USED if not connected)
   /// @param pulses Number of counts per mechanical notch
   Encoder(uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses) : Encoder(NOT_USED, pin1, pin2, pin3, pulses) {}
 

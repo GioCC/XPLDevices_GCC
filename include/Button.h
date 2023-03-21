@@ -11,12 +11,12 @@ private:
   void _handle(bool input);
 
 public:
-  /// @brief Constructor, set mux and pin number
-  /// @param mux mux number (from DigitalIn initialization order)
-  /// @param muxpin pin on the mux (0-15)
-  Button(uint8_t mux, uint8_t muxpin);
+  /// @brief Constructor, set Expander and Channel number
+  /// @param nExp Expander number (from DigitalIn initialization order)
+  /// @param nChannel Channel on the IO expander (0-15)
+  Button(uint8_t nExp, uint8_t nChannel);
   
-  /// @brief Constructor, set digital input without mux 
+  /// @brief Constructor, set digital input without Expander 
   /// @param pin Arduino pin number
   Button(uint8_t pin) : Button(NOT_USED, pin){};
 
@@ -80,13 +80,14 @@ private:
   void _handle(bool input);
 
 public:
-  /// @brief Constructor, set mux and pin number
-  /// @param mux mux number (from initialization order)
-  /// @param muxpin pin on the mux (0-15)
-  /// @param delay Cyclic delay for repeat function
-  RepeatButton(uint8_t mux, uint8_t muxpin, uint32_t delay);
 
-  /// @brief Constructor, set digital input without mux 
+  /// @brief Constructor, set Expander and Channel number
+  /// @param nExp Expander number (from initialization order)
+  /// @param nChannel Channel on the IO expander (0-15)
+  /// @param delay Cyclic delay for repeat function
+  RepeatButton(uint8_t nExp, uint8_t nChannel, uint32_t delay);
+
+  /// @brief Constructor, set digital input without Expander 
   /// @param pin Arduino pin number
   /// @param delay Cyclic delay for repeat function
   RepeatButton(uint8_t pin, uint32_t delay) : RepeatButton(NOT_USED, pin, delay){};

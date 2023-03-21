@@ -18,9 +18,9 @@ void directOut(uint8_t port, uint8_t pinMsk, uint8_t val)
 DigitalIn_::DigitalIn_()
 {
   _nExpanders = 0;
-  for (uint8_t mux = 0; mux < MUX_MAX_NUMBER; mux++)
+  for (uint8_t nExp = 0; nExp < MUX_MAX_NUMBER; nExp++)
   {
-    _pin[mux] = NOT_USED;
+    _pin[nExp] = NOT_USED;
   }
   _s0 = _s1 = _s2 = _s3 = NOT_USED;
   #ifdef ARDUINO_ARCH_AVR
@@ -104,20 +104,20 @@ bool DigitalIn_::addMCP(uint8_t adress)
 }
 #endif
 
-// Gets specific pin from mux, number according to initialization order 
-bool DigitalIn_::getBit(uint8_t mux, uint8_t pin, bool direct)
+// Gets specific input from expander channel; expander number according to initialization order 
+bool DigitalIn_::getBit(uint8_t nExp, uint8_t pin, bool direct)
 {
   bool res;
   
   // Unintuitive evaluation order favors multiplexers, 
   // which also have to perform the selector setting
-  if (mux != NOT_USED)
+  if (nExp != NOT_USED)
   {
-    if(direct && !isMCP(mux)) {
+    if(direct && !isMCP(nExp)) {
         setMuxChannel(pin);
-        res = !digitalRead(_pin[mux]);
+        res = !digitalRead(_pin[nExp]);
     } else {
-        res = bitRead(_data[mux], pin);
+        res = bitRead(_data[nExp], pin);
     }
   } else {
     res = !digitalRead(pin);

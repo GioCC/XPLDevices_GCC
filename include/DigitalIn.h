@@ -22,44 +22,44 @@
 #define MCP_PIN  254
 
 /// @brief Class to encapsulate digital inputs from 74HC4067 and MCP23017 input multiplexers,
-/// used by all digital input devices. Scans all mux inputs into internal process data image.
+/// used by all digital input devices. Scans all expander inputs into internal process data image.
 class DigitalIn_
 {
 public:
   /// @brief Class constructor
   DigitalIn_();
 
-  /// @brief Set adress pins for 74HC4067 multiplexers. All mux share the same adress pins.
-  /// @param s0 Adress pin s0
-  /// @param s1 Adress pin s1
-  /// @param s2 Adress pin s2
-  /// @param s3 Adress pin s3
+  /// @brief Set selector pins for 74HC4067 multiplexers. All multiplexers share the same selector pins.
+  /// @param s0 Selector pin s0
+  /// @param s1 Selector pin s1
+  /// @param s2 Selector pin s2
+  /// @param s3 Selector pin s3
   void setMux(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3);
   
   /// @brief Add one 74HC4067 multiplexer
-  /// @param pin Data pin the mux is connected to
-  /// @return true when successful, false when all mux have been used up (increase MUX_MAX_NUMBER)
+  /// @param pin Data pin the multiplexer is connected to
+  /// @return true when successful, false when all multiplexers have been used up (increase MUX_MAX_NUMBER)
   bool addMux(uint8_t pin);
 
 #if MCP_MAX_NUMBER > 0
-  /// @brief Add one MCP23017 i2c multiplexer
-  /// @param adress i2c adress of the mux (valid: 0x20-0x28)
-  /// @return true when successful, false when all mux have been used up (increase MCP_MAX_NUMBER)
-  bool addMCP(uint8_t adress);
+  /// @brief Add one MCP23017 I2C IO expander
+  /// @param address I2C address of the expander (valid: 0x20-0x28)
+  /// @return true when successful, false when all expanders have been used up (increase MCP_MAX_NUMBER)
+  bool addMCP(uint8_t address);
 
   bool isMCP(uint8_t index) { return (_pin[index] == MCP_PIN); }
 #else
   bool isMCP(uint8_t index) { return false; }
 #endif
   
-  /// @brief Get one bit from the mux or a digital input
-  /// @param mux mux to read from. Use NOT_USED to access ardunio digital input without mux
-  /// @param muxpin pin (0-15) on the mux or Arduino pin when mux = NOT_USED
-  /// @param direct poll actual input instead of cache (multiplexers only)
-  /// @return Status of the input (inverted, true = GND, false = +5V)
-  bool getBit(uint8_t mux, uint8_t muxpin, bool direct = false);
+  /// @brief Get the state of one input from either a direct input pin or an expander.
+  /// @param nExp expander to read from. Use NOT_USED to access Arduino digital input pin
+  /// @param nChannel expander channel (0-15), or Arduino pin number when nExp = NOT_USED
+  /// @param direct poll actual input instead of cache (effective on multiplexers only)
+  /// @return Status of the input (negative logic: true = GND, false = +5V)
+  bool getBit(uint8_t nExp, uint8_t nChannel, bool direct = false);
   
-  /// @brief Read all mux inputs into process data input image
+  /// @brief Read all expander inputs into data cache; direct pins are not included (always read directly)
   void handle();
 private:
   uint8_t _s0, _s1, _s2, _s3;
