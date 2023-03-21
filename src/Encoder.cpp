@@ -6,9 +6,9 @@
 #endif
 
 // Encoder with button functionality on MUX
-Encoder::Encoder(uint8_t mux, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses)
+Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses)
 {
-  _mux = mux;
+  _nExp = nExp;
   _pin1 = pin1;
   _pin2 = pin2;
   _pin3 = pin3;
@@ -30,8 +30,15 @@ Encoder::Encoder(uint8_t mux, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse
 // real time handling
 void Encoder::handle()
 {
+  uint8_t newState = 0;
   // collect new state
-  _state = ((_state & 0x03) << 2) | (DigitalIn.getBit(_mux, _pin2) << 1) | (DigitalIn.getBit(_mux, _pin1));
+  // If MCU direct pins, getBit() performs pin read, not cache read
+  // For _nExp values corresponding to I/O expanders: resort to cache read
+  // For actual multiplexers: avoid cache read, access multiplexer now
+  newState |= (DigitalIn.getBit(_nExp, _pin2, true) ? 0x02 : 0x00);
+  newState |= (DigitalIn.getBit(_nExp, _pin1, true) ? 0x01 : 0x00);
+  _state = ((_state & 0x03) << 2) | newState;
+
   // evaluate state change
   if (_state == 1 || _state == 7 || _state == 8 || _state == 14)
   {
@@ -53,7 +60,7 @@ void Encoder::handle()
   // optional button functionality
   if (_pin3 != NOT_USED)
   {
-    if (DigitalIn.getBit(_mux, _pin3))
+    if (DigitalIn.getBit(_nExp, _pin3))
     {
       if (_debounce == 0)
       {

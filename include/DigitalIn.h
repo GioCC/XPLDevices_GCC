@@ -19,6 +19,7 @@
 #endif
 
 #define NOT_USED 255
+#define MCP_PIN  254
 
 /// @brief Class to encapsulate digital inputs from 74HC4067 and MCP23017 input multiplexers,
 /// used by all digital input devices. Scans all mux inputs into internal process data image.
@@ -35,10 +36,6 @@ public:
   /// @param s3 Adress pin s3
   void setMux(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3);
   
-  /// @brief Set multiplexer channel.
-  /// @param ch Channel number (0..15)
-  void setMuxChannel(uint8_t ch);
-  
   /// @brief Add one 74HC4067 multiplexer
   /// @param pin Data pin the mux is connected to
   /// @return true when successful, false when all mux have been used up (increase MUX_MAX_NUMBER)
@@ -49,13 +46,18 @@ public:
   /// @param adress i2c adress of the mux (valid: 0x20-0x28)
   /// @return true when successful, false when all mux have been used up (increase MCP_MAX_NUMBER)
   bool addMCP(uint8_t adress);
+
+  bool isMCP(uint8_t index) { return (_pin[index] == MCP_PIN); }
+#else
+  bool isMCP(uint8_t index) { return false; }
 #endif
   
   /// @brief Get one bit from the mux or a digital input
   /// @param mux mux to read from. Use NOT_USED to access ardunio digital input without mux
   /// @param muxpin pin (0-15) on the mux or Arduino pin when mux = NOT_USED
+  /// @param direct poll actual input instead of cache (multiplexers only)
   /// @return Status of the input (inverted, true = GND, false = +5V)
-  bool getBit(uint8_t mux, uint8_t muxpin);
+  bool getBit(uint8_t mux, uint8_t muxpin, bool direct = false);
   
   /// @brief Read all mux inputs into process data input image
   void handle();
@@ -66,13 +68,17 @@ private:
   uint8_t _S0mask, _S1mask, _S2mask, _S3mask;
 #endif
 
-  uint8_t _numPins;
+  uint8_t _nExpanders;
   uint8_t _pin[MUX_MAX_NUMBER + MCP_MAX_NUMBER];
   int16_t _data[MUX_MAX_NUMBER + MCP_MAX_NUMBER];
 #if MCP_MAX_NUMBER > 0
   uint8_t _numMCP;
   Adafruit_MCP23X17 _mcp[MCP_MAX_NUMBER];
 #endif
+  /// @brief Set multiplexer channel.
+  /// @param ch Channel number (0..15)
+  void setMuxChannel(uint8_t ch);
+  
 };
 
 /// @brief Instance of the class for system wide use

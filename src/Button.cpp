@@ -8,7 +8,7 @@
 // Buttons
 Button::Button(uint8_t mux, uint8_t pin)
 {
-  _mux = mux;
+  _nExp = mux;
   _pin = pin;
   _state = 0;
   _transition = 0;
@@ -19,7 +19,7 @@ Button::Button(uint8_t mux, uint8_t pin)
 // use additional bit for input masking
 void Button::_handle(bool input)
 {
-  if (DigitalIn.getBit(_mux, _pin) && input)
+  if (DigitalIn.getBit(_nExp, _pin) && input)
   {
     if (_state == 0)
     {
@@ -56,7 +56,7 @@ RepeatButton::RepeatButton(uint8_t mux, uint8_t pin, uint32_t delay) : Button(mu
 
 void RepeatButton::_handle(bool input)
 {
-  if (DigitalIn.getBit(_mux, _pin) && input)
+  if (DigitalIn.getBit(_nExp, _pin) && input)
   {
     if (_state == 0)
     {

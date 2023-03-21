@@ -64,7 +64,7 @@ protected:
     transPressed,
     transReleased
   };
-  uint8_t _mux;
+  uint8_t _nExp;
   uint8_t _pin;
   uint8_t _state;
   uint8_t _transition;

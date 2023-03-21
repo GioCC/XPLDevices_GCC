@@ -92,7 +92,7 @@ private:
     transPressed,
     transReleased
   };
-  uint8_t _mux;
+  uint8_t _nExp;
   uint8_t _pin1, _pin2, _pin3;
   int8_t _count;
   uint8_t _pulses;

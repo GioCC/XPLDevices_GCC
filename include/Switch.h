@@ -54,7 +54,7 @@ private:
     switchOff,
     switchOn
   };
-  uint8_t _mux;
+  uint8_t _nExp;
   uint8_t _pin;
   uint8_t _debounce;
   uint8_t _state;
@@ -130,7 +130,7 @@ private:
     switchOn1,
     switchOn2
   };
-  uint8_t _mux;
+  uint8_t _nExp;
   uint8_t _pin1;
   uint8_t _pin2;
   uint8_t _lastState;

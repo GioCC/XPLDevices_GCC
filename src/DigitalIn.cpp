@@ -1,9 +1,8 @@
 #include "DigitalIn.h"
 
-#define MCP_PIN 254
-
 #ifdef ARDUINO_ARCH_AVR
 // Helper function for quick pin out setting (AVR)
+// Used for multiplexer selector for faster access
 void directOut(uint8_t port, uint8_t pinMsk, uint8_t val)
 {
     volatile uint8_t *out = portOutputRegister(port);
@@ -18,7 +17,7 @@ void directOut(uint8_t port, uint8_t pinMsk, uint8_t val)
 // constructor
 DigitalIn_::DigitalIn_()
 {
-  _numPins = 0;
+  _nExpanders = 0;
   for (uint8_t mux = 0; mux < MUX_MAX_NUMBER; mux++)
   {
     _pin[mux] = NOT_USED;
@@ -73,11 +72,11 @@ void DigitalIn_::setMuxChannel(uint8_t ch)
 // Add a 74HC4067
 bool DigitalIn_::addMux(uint8_t pin)
 {
-  if (_numPins >= MUX_MAX_NUMBER)
+  if (_nExpanders >= MUX_MAX_NUMBER)
   {
     return false;
   }
-  _pin[_numPins++] = pin;
+  _pin[_nExpanders++] = pin;
   pinMode(pin, INPUT);
   return true;
 }
@@ -100,19 +99,31 @@ bool DigitalIn_::addMCP(uint8_t adress)
     _mcp[_numMCP].pinMode(i, INPUT_PULLUP);
   }
   _numMCP++;
-  _pin[_numPins++] = MCP_PIN;
+  _pin[_nExpanders++] = MCP_PIN;
   return true;
 }
 #endif
 
 // Gets specific pin from mux, number according to initialization order 
-bool DigitalIn_::getBit(uint8_t mux, uint8_t pin)
+bool DigitalIn_::getBit(uint8_t mux, uint8_t pin, bool direct)
 {
-  if (mux == NOT_USED)
+  bool res;
+  
+  // Unintuitive evaluation order favors multiplexers, 
+  // which also have to perform the selector setting
+  if (mux != NOT_USED)
   {
-    return !digitalRead(pin);
-  } 
-  return bitRead(_data[mux], pin);
+    if(direct && !isMCP(mux)) {
+        setMuxChannel(pin);
+        res = !digitalRead(_pin[mux]);
+    } else {
+        res = bitRead(_data[mux], pin);
+    }
+  } else {
+    res = !digitalRead(pin);
+  }
+  
+  return res;
 }
 
 // read all inputs together -> base for board specific optimization by using byte read
@@ -120,30 +131,30 @@ void DigitalIn_::handle()
 {
   // only if Mux Pins present
 #if MCP_MAX_NUMBER > 0  
-  if (_numPins > _numMCP)
+  if (_nExpanders > _numMCP)
 #else
-  if (_numPins > 0)
+  if (_nExpanders > 0)
 #endif
   {
     for (uint8_t muxch = 0; muxch < 16; muxch++)
     {
       setMuxChannel(muxch);
-      for (uint8_t mux = 0; mux < _numPins; mux++)
+      for (uint8_t nExp = 0; nExp < _nExpanders; nExp++)
       {
-        if (_pin[mux] != MCP_PIN)
+        if (_pin[nExp] != MCP_PIN)
         {
-          bitWrite(_data[mux], muxch, !digitalRead(_pin[mux]));
+          bitWrite(_data[nExp], muxch, !digitalRead(_pin[nExp]));
         }
       }
     }
   }
 #if MCP_MAX_NUMBER > 0
   int mcp = 0;
-  for (uint8_t mux = 0; mux < _numPins; mux++)
+  for (uint8_t nExp = 0; nExp < _nExpanders; nExp++)
   {
-    if (_pin[mux] == MCP_PIN)
+    if (_pin[nExp] == MCP_PIN)
     {
-      _data[mux] = ~_mcp[mcp++].readGPIOAB();
+      _data[nExp] = ~_mcp[nExp++].readGPIOAB();
     }
   }
 #endif
