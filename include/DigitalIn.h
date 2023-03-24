@@ -56,17 +56,16 @@ public:
   /// @param nChannel expander channel (0-15), or Arduino pin number when nExp = NOT_USED
   /// @param direct poll actual input instead of cache (effective on multiplexers only)
   /// @return Status of the input (negative logic: true = GND, false = +5V)
-  bool getBit(uint8_t nExp, uint8_t nChannel, bool direct = false);
+  bool getBit(uint8_t expander, uint8_t channel, bool direct = false);
   
   /// @brief Read all expander inputs into data cache; direct pins are not included (always read directly)
   void handle();
 private:
   uint8_t _s0, _s1, _s2, _s3;
 #ifdef ARDUINO_ARCH_AVR
-  uint8_t _S0port, _S1port, _S2port, _S3port;
-  uint8_t _S0mask, _S1mask, _S2mask, _S3mask;
+  uint8_t _s0port, _s1port, _s2port, _s3port;
+  uint8_t _s0mask, _s1mask, _s2mask, _s3mask;
 #endif
-
   uint8_t _nExpanders;
   uint8_t _pin[MUX_MAX_NUMBER + MCP_MAX_NUMBER];
   int16_t _data[MUX_MAX_NUMBER + MCP_MAX_NUMBER];
