@@ -10,8 +10,8 @@ Switch::Switch(uint8_t nExp, uint8_t pin)
   _nExp = nExp;
   _pin = pin;
   _state = switchOff;
-  _cmdOff = -1;
   _cmdOn = -1;
+  _cmdOff = -1;
   pinMode(_pin, INPUT_PULLUP);
 }
 
@@ -37,7 +37,11 @@ void Switch::processCommand()
 {
   if (_transition)
   {
-    XP.commandTrigger(getCommand());
+    int cmd = getCommand();
+    if (cmd >= 0)
+    {
+      XP.commandTrigger(getCommand());
+    }
     _transition = false;
   }
 }
@@ -52,6 +56,7 @@ Switch2::Switch2(uint8_t nExp, uint8_t pin1, uint8_t pin2)
   _state = switchOff;
   _cmdOff = -1;
   _cmdOn1 = -1;
+  _cmdOn2 = -1;
   if (_nExp == NOT_USED)
   {
     pinMode(_pin1, INPUT_PULLUP);

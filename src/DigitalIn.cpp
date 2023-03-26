@@ -89,6 +89,7 @@ void DigitalIn_::setMuxChannel(uint8_t ch)
   preg = portOutputRegister(_s3port); (ch & 0x02) ? (*preg |= _s1mask) : (*preg &= ~_s1mask);
   preg = portOutputRegister(_s0port); (ch & 0x01) ? (*preg |= _s0mask) : (*preg &= ~_s0mask);
   SREG = oldSREG;
+  delayMicroseconds(1);     // Allow signals to settle
 #else
   directOut(_s3, (ch & 0x08));
   directOut(_s2, (ch & 0x04));
