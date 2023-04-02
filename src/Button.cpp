@@ -13,7 +13,9 @@ Button::Button(uint8_t nExp, uint8_t pin)
   _state = 0;
   _transition = 0;
   _cmdPush = -1;
-  pinMode(_pin, INPUT_PULLUP);
+  if(mux == NOT_USED) {
+    pinMode(_pin, INPUT_PULLUP);
+  }
 }
 
 // use additional bit for input masking

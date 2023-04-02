@@ -19,11 +19,13 @@ Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPuls
   _cmdUp = -1;
   _cmdDown = -1;
   _cmdPush = -1;
-  pinMode(_pin1, INPUT_PULLUP);
-  pinMode(_pin2, INPUT_PULLUP);
-  if (_pin3 != NOT_USED)
-  {
-    pinMode(_pin3, INPUT_PULLUP);
+  if(mux == NOT_USED) {
+    pinMode(_pin1, INPUT_PULLUP);
+    pinMode(_pin2, INPUT_PULLUP);
+    if (_pin3 != NOT_USED)
+    {
+        pinMode(_pin3, INPUT_PULLUP);
+    }
   }
 }
 

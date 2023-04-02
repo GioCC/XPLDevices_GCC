@@ -12,7 +12,9 @@ Switch::Switch(uint8_t nExp, uint8_t pin)
   _state = switchOff;
   _cmdOn = -1;
   _cmdOff = -1;
-  pinMode(_pin, INPUT_PULLUP);
+  if(mux == NOT_USED) {
+    pinMode(_pin, INPUT_PULLUP);
+  }
 }
 
 void Switch::handle()
