@@ -7,72 +7,72 @@
 /// Supports start and end of commands so XPlane can show the current Button status.
 class Button
 {
-private:
-  void _handle(bool input);
-
 public:
-  /// @brief Constructor, set Expander and Channel number
-  /// @param nExp Expander number (from DigitalIn initialization order)
-  /// @param nChannel Channel on the IO expander (0-15)
-  Button(uint8_t nExp, uint8_t nChannel);
-  
-  /// @brief Constructor, set digital input without Expander 
-  /// @param pin Arduino pin number
-  Button(uint8_t pin) : Button(NOT_USED, pin){};
+    /// @brief Constructor, set Expander and Channel number
+    /// @param nExp Expander number (from DigitalIn initialization order)
+    /// @param nChannel Channel on the IO expander (0-15)
+    Button(uint8_t nExp, uint8_t nChannel);
 
-  /// @brief Handle realtime. Read input and evaluate any transitions.
-  void handle()                 { _handle(true); };
+    /// @brief Constructor, set digital input without Expander
+    /// @param pin Arduino pin number
+    explicit Button(uint8_t pin)
+        : Button(NOT_USED, pin){};
 
-  /// @brief Handle realtime. Read input and evaluate any transitions.
-  /// @param input Additional mask bit. AND connected with physical input.
-  void handle(bool input)       { _handle(input); };
+    /// @brief Handle realtime. Read input and evaluate any transitions.
+    //virtual 
+    void handle(void);
 
-  /// @brief Handle realtime and process XPLDirect commands
-  void handleXP()               { _handle(true); processCommand(); };
+    /// @brief Handle realtime and process XPLDirect commands
+    //virtual 
+    void handleXP(void) { handle(); processCommand(); };
 
-  /// @brief Handle realtime and process XPLDirect commands
-  /// @param input Additional mask bit. AND tied with physical input.
-  void handleXP(bool input)     { _handle(input); processCommand(); };
+    /// @brief Evaluate and reset transition if button pressed down
+    /// @return true: Button was pressed. Transition detected.
+    bool pressed(void) { return _transition == transPressed ? (_transition = transNone, true) : false; };
 
-  /// @brief Evaluate and reset transition if button pressed down
-  /// @return true: Button was pressed. Transition detected.
-  bool pressed()                { return _transition == transPressed  ? (_transition = transNone, true) : false; };
+    /// @brief Evaluate and reset transition if button released
+    /// @return true: Button was released. Transition detected.
+    bool released(void) { return _transition == transReleased ? (_transition = transNone, true) : false; };
 
-  /// @brief Evaluate and reset transition if button released
-  /// @return true: Button was released. Transition detected.
-  bool released()               { return _transition == transReleased ? (_transition = transNone, true) : false; };
+    /// @brief Evaluate status of Button
+    /// @return true: Button is currently held down
+    bool engaged(void) { return _state > 0; };
 
-  /// @brief Evaluate status of Button
-  /// @return true: Button is currently held down
-  bool engaged()                { return _state > 0; };
+    /// @brief Set XPLDirect command for Button events
+    /// @param cmdPush Command handle as returned by XP.registerCommand()
+    void setCommand(int cmdPush);
 
-  /// @brief Set XPLDirect command for Button events
-  /// @param cmdPush Command handle as returned by XP.registerCommand()
-  void setCommand(int cmdPush);
+    /// @brief Set XPLDirect command for Button events
+    /// @param cmdNamePush Command name to register
+    // void setCommand(XPString_t *cmdNamePush);
 
-  /// @brief Set XPLDirect command for Button events
-  /// @param cmdNamePush Command name to register
-  void setCommand(XPString_t *cmdNamePush);
+    /// @brief Get XPLDirect command associated with Button
+    /// @return Handle of the command
+    int  getCommand(void) { return _cmdPush; };
 
-  /// @brief Get XPLDirect command associated with Button
-  /// @return Handle of the command
-  int getCommand()              { return _cmdPush; };
+    /// @brief Process all transitions and active transitions to XPLDirect
+    void processCommand(void);
 
-  /// @brief Process all transitions and active transitions to XPLDirect   
-  void processCommand();
+    using callback = void(*)(uint8_t);
 
 protected:
-  enum
-  {
-    transNone,
-    transPressed,
-    transReleased
-  };
-  uint8_t _nExp;
-  uint8_t _pin;
-  uint8_t _state;
-  uint8_t _transition;
-  int _cmdPush;
+    enum {
+        transNone,
+        transPressed,
+        transReleased
+    };
+
+    static callback onPush;
+    static callback onRelease;
+
+    // static void (*onPush)(uint8_t cmdHandle);
+    // static void (*onRelease)(uint8_t cmdHandle);
+
+    uint8_t _nExp;
+    uint8_t _pin;
+    uint8_t _state;
+    uint8_t _transition;
+    int     _cmdPush;
 };
 
 /// @brief Class for a simple pushbutton with debouncing and XPLDirect command handling,
@@ -80,39 +80,31 @@ protected:
 /// When button is held down cyclic new pressed events are generated for auto repeat function.
 class RepeatButton : public Button
 {
-private:
-  void _handle(bool input);
-
 public:
+    /// @brief Constructor, set Expander and Channel number
+    /// @param nExp Expander number (from initialization order)
+    /// @param nChannel Channel on the IO expander (0-15)
+    /// @param delay Cyclic delay for repeat function
+    RepeatButton(uint8_t nExp, uint8_t nChannel, uint32_t delay);
 
-  /// @brief Constructor, set Expander and Channel number
-  /// @param nExp Expander number (from initialization order)
-  /// @param nChannel Channel on the IO expander (0-15)
-  /// @param delay Cyclic delay for repeat function
-  RepeatButton(uint8_t nExp, uint8_t nChannel, uint32_t delay);
+    /// @brief Constructor, set digital input without Expander
+    /// @param pin Arduino pin number
+    /// @param delay Cyclic delay for repeat function
+    RepeatButton(uint8_t pin, uint32_t delay)
+        : RepeatButton(NOT_USED, pin, delay){};
 
-  /// @brief Constructor, set digital input without Expander 
-  /// @param pin Arduino pin number
-  /// @param delay Cyclic delay for repeat function
-  RepeatButton(uint8_t pin, uint32_t delay) : RepeatButton(NOT_USED, pin, delay){};
+    /// @brief Handle realtime. Read input and evaluate any transitions.
+    // virtual 
+    void handle(void); // override;
 
-  /// @brief Handle realtime. Read input and evaluate any transitions.
-  void handle()                 { _handle(true); };
-
-  /// @brief Handle realtime. Read input and evaluate any transitions.
-  /// @param input Additional mask bit. AND connected with physical input.
-  void handle(bool input)       { _handle(input); };
-
-  /// @brief Handle realtime and process XPLDirect commands
-  void handleXP()               { _handle(true); processCommand(); };
-  
-  /// @brief Handle realtime and process XPLDirect commands
-  /// @param input Additional mask bit. AND tied with physical input.
-  void handleXP(bool input)     { _handle(input); processCommand(); };
+    /// @brief Handle realtime and process XPLDirect commands
+    // virtual 
+    void handleXP() //override
+        { handle(); processCommand(); };
 
 protected:
-  uint32_t _delay;
-  uint32_t _timer;
+    uint32_t _delay;
+    uint32_t _timer;
 };
 
 #endif
