@@ -3,6 +3,8 @@
 #include <Arduino.h>
 #include <DigitalIn.h>
 
+//! TODO: Encoder on MUX
+
 /// @brief Class for simple rotary encoders.
 /// Without button (handled separately). 
 /// The number of counts per mechanical notch can be
@@ -31,18 +33,13 @@ public:
     /// @param nExp expander number (from initialization order)
     /// @param pin1 pin for Encoder A track
     /// @param pin2 pin for Encoder B track
-    // /// @param pin3 pin for Encoder push function (NOT_USED if not connected)
     /// @param pulses Number of counts per mechanical notch
-    // Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses);
     Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, EncPulse_t pulses);
 
     /// @brief Constructor. Sets connected pins and number of counts per notch.
     /// @param pin1 pin for Encoder A track
     /// @param pin2 pin for Encoder B track
-    // /// @param pin3 pin for Encoder push function (NOT_USED if not connected)
     /// @param pulses Number of counts per mechanical notch
-    // Encoder(uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses)
-    //     : Encoder(NOT_USED, pin1, pin2, pin3, pulses) {}
     Encoder(uint8_t pin1, uint8_t pin2, EncPulse_t pulses)
         : Encoder(NOT_USED, pin1, pin2, pulses) {}
 
@@ -75,40 +72,10 @@ public:
     /// @return true: up event available and transition reset.
     bool    down() { return _count <= -_pulses ? (_count += _pulses, true) : false; };
 
-    // /// @brief Evaluate and reset transition if Encoder pressed down
-    // /// @return true: Button was pressed. Transition detected and reset.
-    // bool    pressed() { return _transition == transPressed ? (_transition = transNone, true) : false; };
-
-    // /// @brief Evaluate and reset transition if Encoder released
-    // /// @return true: Button was released. Transition detected and reset.
-    // bool    released() { return _transition == transReleased ? (_transition = transNone, true) : false; };
-
-    // /// @brief Evaluate status of Encoder push function
-    // /// @return true: Button is currently held down
-    // bool    engaged() { return _state > 0; };
-
-    // /// @brief Set XPLDirect commands for Encoder events
-    // /// @param cmdUp Command handle for positive turn as returned by XPLDirect::registerCommand()
-    // /// @param cmdDown Command handle for negative turn as returned by XPLDirect::registerCommand()
-    // /// @param cmdPush Command handle for push as returned by XPLDirect::registerCommand()
-    // // void    setCommand(int cmdUp, int cmdDown, int cmdPush);
-    // void    setCommand(int cmdUp, int cmdDown);
-
-    // /// @brief Set XPLDirect commands for Encoder events
-    // /// @param cmdNameUp Command for positive turn
-    // /// @param cmdNameDown Command for negative turn
-    // /// @param cmdNamePush Command for push
-    // void    setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown, XPString_t *cmdNamePush);
-
     /// @brief Set XPLDirect commands for Encoder events without push function
     /// @param cmdUp Command handle for positive turn as returned by XPLDirect::registerCommand()
     /// @param cmdDown Command handle for negative turn as returned by XPLDirect::registerCommand()
     void    setCommand(int cmdUp, int cmdDown);
-
-    // /// @brief Set XPLDirect commands for Encoder events
-    // /// @param cmdNameUp Command for positive turn
-    // /// @param cmdNameDown Command for negative turn
-    // void    setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown);
 
     /// @brief Get XPLDirect command assiciated with the selected event
     /// @param cmd Event to read out (encCmdUp, encCmdDown, encCmdPush)
@@ -129,11 +96,8 @@ private:
     int8_t  _count;
     uint8_t _pulses;
     uint8_t _state;
-    // uint8_t _debounce;
-    // uint8_t _transition;
     int     _cmdUp;
     int     _cmdDown;
-    // int     _cmdPush;
 };
 
 #endif

@@ -20,27 +20,18 @@ void Encoder::setCallbacks(callback cb_onUp, callback cb_onDown
     // onFastDown = cb_onFastDown;
 }
 
-
-// Encoder with button functionality on MUX
-// Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses)
 Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, EncPulse_t pulses)
 {
     _nExp       = nExp;
     _pin1       = pin1;
     _pin2       = pin2;
-    // _pin3       = pin3;
     _pulses     = pulses;
     _count      = 0;
     _state      = 0;
-    // _transition = transNone;
     _cmdUp      = -1;
     _cmdDown    = -1;
-    // _cmdPush    = -1;
     pinMode(_pin1, INPUT_PULLUP);
     pinMode(_pin2, INPUT_PULLUP);
-    // if (_pin3 != NOT_USED) {
-    //     pinMode(_pin3, INPUT_PULLUP);
-    // }
 }
 
 // real time handling
@@ -65,49 +56,13 @@ void Encoder::update()
     } else if (_state == 6 || _state == 9) {
         _count -= 2;
     }
-
-    // optional button functionality
-    // if (_pin3 != NOT_USED) {
-    //     if (DigitalIn.getBit(_nExp, _pin3)) {
-    //         if (_debounce == 0) {
-    //             _debounce   = DEBOUNCE_DELAY;
-    //             _transition = transPressed;
-    //         }
-    //     } else if (_debounce > 0) {
-    //         if (--_debounce == 0) {
-    //             _transition = transReleased;
-    //         }
-    //     }
-    // }
 }
-
-// void Encoder::setCommand(int cmdUp, int cmdDown) //, int cmdPush)
-// {
-//     _cmdUp   = cmdUp;
-//     _cmdDown = cmdDown;
-//     // _cmdPush = cmdPush;
-// }
-
-// void Encoder::setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown, XPString_t *cmdNamePush)
-// {
-//     _cmdUp   = XPLDirect::registerCommand(cmdNameUp);
-//     _cmdDown = XPLDirect::registerCommand(cmdNameDown);
-//     // _cmdPush = XPLDirect::registerCommand(cmdNamePush);
-// }
 
 void Encoder::setCommand(int cmdUp, int cmdDown)
 {
     _cmdUp   = cmdUp;
     _cmdDown = cmdDown;
-    // _cmdPush = -1;
 }
-
-// void Encoder::setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown)
-// {
-//     _cmdUp   = XPLDirect::registerCommand(cmdNameUp);
-//     _cmdDown = XPLDirect::registerCommand(cmdNameDown);
-//     // _cmdPush = -1;
-// }
 
 int Encoder::getCommand(EncCmd_t cmd)
 {
@@ -115,8 +70,6 @@ int Encoder::getCommand(EncCmd_t cmd)
     else 
     if (cmd == encCmdDown) { return _cmdDown; }
     else 
-    // if (cmd == encCmdPush) { return _cmdPush; }
-    // else 
     return -1;
 }
 
@@ -128,12 +81,4 @@ void Encoder::trigger()
     if (down()) {
         if(onDown != nullptr) onDown(_cmdDown); // XPLDirect::commandTrigger(_cmdDown);
     }
-    // if (_cmdPush >= 0) {
-    //     if (pressed()) {
-    //         XPLDirect::commandStart(_cmdPush);
-    //     }
-    //     if (released()) {
-    //         XPLDirect::commandEnd(_cmdPush);
-    //     }
-    // }
 }
