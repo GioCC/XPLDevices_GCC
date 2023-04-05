@@ -24,7 +24,7 @@ long strobe;
 void setup() { 
   // setup interface
   Serial.begin(XPLDIRECT_BAUDRATE);
-  XP.begin("Sample");
+  XPLDirect::begin("Sample");
 
   // Connect MUX adress pins to Pin 22-25 (SimVim Pins)
   DigitalIn.setMux(22, 23, 24, 25);
@@ -46,14 +46,14 @@ void setup() {
                       F("sim/lights/strobe_lights_off"));
   
   // Register a DataRef for the strobe light. Read only from XP, 100ms minimum Cycle time, no divider
-  XP.registerDataRef(F("sim/cockpit/electrical/strobe_lights_on"),
+  XPLDirect::registerDataRef(F("sim/cockpit/electrical/strobe_lights_on"),
                      XPL_READ, 100, 0, &strobe);
 }
 
 // Arduino loop function, called cyclic
 void loop() {
   // Handle XPlane interface
-  XP.xloop();
+  XPLDirect::xloop();
 
   // handle all devices and automatically process commandsin background
   btnStart.process();

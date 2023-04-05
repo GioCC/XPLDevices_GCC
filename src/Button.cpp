@@ -9,6 +9,13 @@
 Button::callback Button::onPush    = nullptr;
 Button::callback Button::onRelease = nullptr;
 
+void Button::setCallbacks(callback cb_onPush, callback cb_onRelease)
+{ 
+    onPush = cb_onPush; 
+    onRelease = cb_onRelease; 
+}
+
+
 // Buttons
 Button::Button(uint8_t nExp, uint8_t pin)
 {
@@ -42,16 +49,16 @@ void Button::setCommand(int cmdPush)
 // Must be done explicitly
 // void Button::setCommand(XPString_t *cmdNamePush)
 // {
-//     _cmdPush = XP.registerCommand(cmdNamePush);
+//     _cmdPush = XPLDirect::registerCommand(cmdNamePush);
 // }
 
 void Button::trigger(void)
 {
     if (pressed()) {
-        if(onPush != nullptr) onPush(_cmdPush); //XP.commandStart(_cmdPush);
+        if(onPush != nullptr) onPush(_cmdPush); //XPLDirect::commandStart(_cmdPush);
     } else
     if (released()) {
-        if(onRelease != nullptr) onRelease(_cmdPush); //XP.commandEnd(_cmdPush);
+        if(onRelease != nullptr) onRelease(_cmdPush); //XPLDirect::commandEnd(_cmdPush);
     }
 }
 

@@ -25,7 +25,7 @@ public:
         enc4Pulse = 4
     };
 
-    using callback = void(*)(uint8_t);
+    using callback = int(*)(int);
 
     /// @brief Constructor. Sets connected pins and number of counts per notch.
     /// @param nExp expander number (from initialization order)
@@ -47,17 +47,15 @@ public:
         : Encoder(NOT_USED, pin1, pin2, pulses) {}
 
     /// @brief Set callback functions for encoder events.
-    ///        Callback functions have prototype: void(*)(uint8_t) 
+    ///        Callback functions have prototype: int(*)(int) 
     /// @param cb_onUp   Callback for "up" event
     /// @param cb_onDown Callback for "down" event
     // /// @param cb_onFastUp   Callback for fast "up" event
     // /// @param cb_onFastDown Callback for fast "down" event
-    void setCallback(callback cb_onUp, callback cb_onDown
+    static 
+    void setCallbacks(callback cb_onUp, callback cb_onDown
         // , callback cb_onFastUp, callback cb_onFastDown
-    )
-        { onUp = cb_onUp; onDown = cb_onDown; 
-            // onFastUp = cb_onFastUp; onFastDown = cb_onFastDown;
-        }
+    );
 
     /// @brief Handle realtime. Read input and evaluate any transitions.
     void update();
@@ -90,9 +88,9 @@ public:
     // bool    engaged() { return _state > 0; };
 
     // /// @brief Set XPLDirect commands for Encoder events
-    // /// @param cmdUp Command handle for positive turn as returned by XP.registerCommand()
-    // /// @param cmdDown Command handle for negative turn as returned by XP.registerCommand()
-    // /// @param cmdPush Command handle for push as returned by XP.registerCommand()
+    // /// @param cmdUp Command handle for positive turn as returned by XPLDirect::registerCommand()
+    // /// @param cmdDown Command handle for negative turn as returned by XPLDirect::registerCommand()
+    // /// @param cmdPush Command handle for push as returned by XPLDirect::registerCommand()
     // // void    setCommand(int cmdUp, int cmdDown, int cmdPush);
     // void    setCommand(int cmdUp, int cmdDown);
 
@@ -103,8 +101,8 @@ public:
     // void    setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown, XPString_t *cmdNamePush);
 
     /// @brief Set XPLDirect commands for Encoder events without push function
-    /// @param cmdUp Command handle for positive turn as returned by XP.registerCommand()
-    /// @param cmdDown Command handle for negative turn as returned by XP.registerCommand()
+    /// @param cmdUp Command handle for positive turn as returned by XPLDirect::registerCommand()
+    /// @param cmdDown Command handle for negative turn as returned by XPLDirect::registerCommand()
     void    setCommand(int cmdUp, int cmdDown);
 
     // /// @brief Set XPLDirect commands for Encoder events

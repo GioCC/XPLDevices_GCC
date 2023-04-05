@@ -40,7 +40,7 @@ void Switch::trigger()
     int cmd = getCommand();
     if (cmd >= 0)
     {
-      XP.commandTrigger(getCommand());
+      XPLDirect::commandTrigger(getCommand());
     }
     _transition = false;
   }
@@ -137,7 +137,7 @@ void Switch2::trigger()
 {
   if (_transition)
   {
-    XP.commandTrigger(getCommand());
+    XPLDirect::commandTrigger(getCommand());
     _transition = false;
   }
 }

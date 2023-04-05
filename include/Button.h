@@ -9,7 +9,7 @@ class Button
 {
 public:
 
-    using callback = void(*)(uint8_t);
+    using callback = int(*)(int);
 
     /// @brief Constructor, set Expander and Channel number
     /// @param nExp Expander number (from DigitalIn initialization order)
@@ -22,11 +22,11 @@ public:
         : Button(NOT_USED, pin){};
 
     /// @brief Set callback functions for button events.
-    ///        Callback functions have prototype: void(*)(uint8_t) 
+    ///        Callback functions have prototype: int(*)(int) 
     /// @param cb_onPush Callback for "push" event
     /// @param cb_onRelease Callback for "release" event
-    void setCallback(callback cb_onPush, callback cb_onRelease)
-        { onPush = cb_onPush; onRelease = cb_onRelease; }
+    static 
+    void setCallbacks(callback cb_onPush, callback cb_onRelease);
 
     /// @brief Handle realtime. Read input and evaluate any transitions.
     //virtual 
@@ -49,7 +49,7 @@ public:
     bool engaged(void) { return _state > 0; };
 
     /// @brief Set XPLDirect command for Button events
-    /// @param cmdPush Command handle as returned by XP.registerCommand()
+    /// @param cmdPush Command handle as returned by XPLDirect::registerCommand()
     void setCommand(int cmdPush);
 
     // /// @brief Set XPLDirect command for Button events

@@ -22,7 +22,7 @@ long strobe;
 void setup() { 
   // setup interface
   Serial.begin(XPLDIRECT_BAUDRATE);
-  XP.begin("Sample");
+  XPLDirect::begin("Sample");
 
   // Register Command for the Button
   btnStart.setCommand(F("sim/starters/engage_starter_1"));
@@ -37,14 +37,14 @@ void setup() {
                       F("sim/lights/strobe_lights_off"));
 
   // Register a DataRef for the strobe light. Read only from XP, 100ms minimum Cycle time, no divider
-  XP.registerDataRef(F("sim/cockpit/electrical/strobe_lights_on"),
+  XPLDirect::registerDataRef(F("sim/cockpit/electrical/strobe_lights_on"),
                      XPL_READ, 100, 0, &strobe);
 }
 
 // Arduino loop function, called cyclic
 void loop() {
   // Handle XPlane interface
-  XP.xloop();
+  XPLDirect::xloop();
 
   // handle all devices and automatically process commandsin background
   btnStart.process();

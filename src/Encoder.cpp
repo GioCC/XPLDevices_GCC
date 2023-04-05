@@ -10,6 +10,17 @@ Encoder::callback Encoder::onDown  = nullptr;
 // Encoder::callback Encoder::onFastUp    = nullptr;
 // Encoder::callback Encoder::onFastDown  = nullptr;
 
+void Encoder::setCallbacks(callback cb_onUp, callback cb_onDown
+    // , callback cb_onFastUp, callback cb_onFastDown
+)
+{ 
+    onUp = cb_onUp; 
+    onDown = cb_onDown; 
+    // onFastUp = cb_onFastUp; 
+    // onFastDown = cb_onFastDown;
+}
+
+
 // Encoder with button functionality on MUX
 // Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses)
 Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, EncPulse_t pulses)
@@ -79,9 +90,9 @@ void Encoder::update()
 
 // void Encoder::setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown, XPString_t *cmdNamePush)
 // {
-//     _cmdUp   = XP.registerCommand(cmdNameUp);
-//     _cmdDown = XP.registerCommand(cmdNameDown);
-//     // _cmdPush = XP.registerCommand(cmdNamePush);
+//     _cmdUp   = XPLDirect::registerCommand(cmdNameUp);
+//     _cmdDown = XPLDirect::registerCommand(cmdNameDown);
+//     // _cmdPush = XPLDirect::registerCommand(cmdNamePush);
 // }
 
 void Encoder::setCommand(int cmdUp, int cmdDown)
@@ -93,8 +104,8 @@ void Encoder::setCommand(int cmdUp, int cmdDown)
 
 // void Encoder::setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown)
 // {
-//     _cmdUp   = XP.registerCommand(cmdNameUp);
-//     _cmdDown = XP.registerCommand(cmdNameDown);
+//     _cmdUp   = XPLDirect::registerCommand(cmdNameUp);
+//     _cmdDown = XPLDirect::registerCommand(cmdNameDown);
 //     // _cmdPush = -1;
 // }
 
@@ -112,17 +123,17 @@ int Encoder::getCommand(EncCmd_t cmd)
 void Encoder::trigger()
 {
     if (up()) {
-        if(onUp != nullptr) onUp(_cmdUp); // XP.commandTrigger(_cmdUp);
+        if(onUp != nullptr) onUp(_cmdUp); // XPLDirect::commandTrigger(_cmdUp);
     } else
     if (down()) {
-        if(onDown != nullptr) onDown(_cmdDown); // XP.commandTrigger(_cmdDown);
+        if(onDown != nullptr) onDown(_cmdDown); // XPLDirect::commandTrigger(_cmdDown);
     }
     // if (_cmdPush >= 0) {
     //     if (pressed()) {
-    //         XP.commandStart(_cmdPush);
+    //         XPLDirect::commandStart(_cmdPush);
     //     }
     //     if (released()) {
-    //         XP.commandEnd(_cmdPush);
+    //         XPLDirect::commandEnd(_cmdPush);
     //     }
     // }
 }
