@@ -51,6 +51,8 @@ namespace XPLDevices
 #endif
 
 #ifdef USE_SWITCHES
+        Switch::setCallbacks(XPLDirect::commandTrigger);
+        Switch2::setCallbacks(XPLDirect::commandTrigger);
 #endif
 
 #ifdef USE_SHIFTOUTS
