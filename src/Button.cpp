@@ -6,8 +6,6 @@
 #endif
 
  
-// void (*Button::onPush)(uint8_t)    = nullptr;
-// void (*Button::onRelease)(uint8_t) = nullptr;
 Button::callback Button::onPush    = nullptr;
 Button::callback Button::onRelease = nullptr;
 

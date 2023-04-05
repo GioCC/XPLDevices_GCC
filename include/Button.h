@@ -8,6 +8,9 @@
 class Button
 {
 public:
+
+    using callback = void(*)(uint8_t);
+
     /// @brief Constructor, set Expander and Channel number
     /// @param nExp Expander number (from DigitalIn initialization order)
     /// @param nChannel Channel on the IO expander (0-15)
@@ -17,6 +20,13 @@ public:
     /// @param pin Arduino pin number
     explicit Button(uint8_t pin)
         : Button(NOT_USED, pin){};
+
+    /// @brief Set callback functions for button events.
+    ///        Callback functions have prototype: void(*)(uint8_t) 
+    /// @param cb_onPush Callback for "push" event
+    /// @param cb_onRelease Callback for "release" event
+    void setCallback(callback cb_onPush, callback cb_onRelease)
+        { onPush = cb_onPush; onRelease = cb_onRelease; }
 
     /// @brief Handle realtime. Read input and evaluate any transitions.
     //virtual 
@@ -42,8 +52,8 @@ public:
     /// @param cmdPush Command handle as returned by XP.registerCommand()
     void setCommand(int cmdPush);
 
-    /// @brief Set XPLDirect command for Button events
-    /// @param cmdNamePush Command name to register
+    // /// @brief Set XPLDirect command for Button events
+    // /// @param cmdNamePush Command name to register
     // void setCommand(XPString_t *cmdNamePush);
 
     /// @brief Get XPLDirect command associated with Button
@@ -53,9 +63,8 @@ public:
     /// @brief Process all transitions and active transitions to XPLDirect
     void trigger(void);
 
-    using callback = void(*)(uint8_t);
-
 protected:
+
     enum {
         transNone,
         transPressed,
