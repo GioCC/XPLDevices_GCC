@@ -61,7 +61,7 @@ void ShiftOut::setAll(bool state)
   _update = true;
 }
 
-void ShiftOut::handle()
+void ShiftOut::update()
 {
   if (_update)
   {

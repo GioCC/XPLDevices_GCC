@@ -26,10 +26,10 @@ public:
   AnalogIn(uint8_t pin, Analog_t type, float timeConst);
 
   /// @brief Read analog input, scale value and perform filtering, call once per sample loop
-  void handle();
+  void update();
 
   /// @brief Return actual value
-  /// @return Actual, filtered value as captured with handle()
+  /// @return Actual, filtered value as captured with update()
   float value() { return _value; };
 
   /// @brief Return raw value

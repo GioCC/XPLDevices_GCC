@@ -22,7 +22,7 @@ Button::Button(uint8_t nExp, uint8_t pin)
     pinMode(_pin, INPUT_PULLUP);
 }
 
-void Button::handle(void)
+void Button::update(void)
 {
     if (DigitalIn.getBit(_nExp, _pin)) {
         if (_state == 0) {
@@ -47,7 +47,7 @@ void Button::setCommand(int cmdPush)
 //     _cmdPush = XP.registerCommand(cmdNamePush);
 // }
 
-void Button::processCommand(void)
+void Button::trigger(void)
 {
     if (pressed()) {
         if(onPush != nullptr) onPush(_cmdPush); //XP.commandStart(_cmdPush);
@@ -64,7 +64,7 @@ RepeatButton::RepeatButton(uint8_t nExp, uint8_t pin, uint32_t delay)
     _timer = 0;
 }
 
-void RepeatButton::handle(void)
+void RepeatButton::update(void)
 {
     if (DigitalIn.getBit(_nExp, _pin)) {
         if (_state == 0) {

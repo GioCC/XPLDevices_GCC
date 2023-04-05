@@ -47,9 +47,9 @@ void loop() {
   XP.xloop();
 
   // handle all devices and automatically process commandsin background
-  btnStart.handleXP();
-  encHeading.handleXP();
-  swStrobe.handleXP();
+  btnStart.process();
+  encHeading.process();
+  swStrobe.process();
 
   // Show the status of the Strobe on the internal LED
   digitalWrite(LED_BUILTIN, (strobe > 0));

@@ -17,10 +17,10 @@ public:
   Switch(uint8_t pin) : Switch (NOT_USED, pin) {};
   
   /// @brief Handle realtime. Read input and evaluate any transitions.
-  void handle();
+  void update();
 
   /// @brief Handle realtime and process XPLDirect commands
-  void handleXP() { handle(); processCommand(); };
+  void process() { update(); trigger(); };
 
   /// @brief Check whether Switch set to on
   /// @return true: Switch is on
@@ -54,7 +54,7 @@ public:
   int getCommand() { return  (_state == switchOn ? _cmdOn : _cmdOff); };
   
   /// @brief Process all transitions to XPLDirect
-  void processCommand();
+  void trigger();
   
   /// @brief Check Status of Switch and translate to float value
   /// @param onValue Value to return when Switch is set to on
@@ -93,10 +93,10 @@ public:
   Switch2(uint8_t pin1, uint8_t pin2) : Switch2(NOT_USED, pin1, pin2) {}
 
   /// @brief Handle realtime. Read inputs and evaluate any transitions.
-  void handle();
+  void update();
 
   /// @brief Handle realtime and process XPLDirect commands
-  void handleXP() { handle(); processCommand(); };
+  void process() { update(); trigger(); };
 
   /// @brief Check whether Switch set to off
   /// @return true: Switch is off
@@ -141,7 +141,7 @@ public:
   int getCommand();
 
   /// @brief Process all transitions to XPLDirect
-  void processCommand();
+  void trigger();
 
   /// @brief Check Status of Switch and translate to float value
   /// @param on1Value Value to return when Switch is set to on1

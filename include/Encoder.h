@@ -38,10 +38,10 @@ public:
   Encoder(uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPulse_t pulses) : Encoder(NOT_USED, pin1, pin2, pin3, pulses) {}
 
   /// @brief Handle realtime. Read input and evaluate any transitions.
-  void handle();
+  void update();
 
   /// @brief Handle realtime and process XPLDirect commands.
-  void handleXP()   { handle(); processCommand(); };
+  void process()   { update(); trigger(); };
 
   /// @brief Read current Encoder count.
   /// @return Remaining Encoder count.
@@ -95,7 +95,7 @@ public:
   int getCommand(EncCmd_t cmd);
 
   /// @brief Check for Encoder events and process XPLDirect commands as appropriate
-  void processCommand();
+  void trigger();
 private:
   enum
   {

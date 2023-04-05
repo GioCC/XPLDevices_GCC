@@ -31,7 +31,7 @@ AnalogIn::AnalogIn(uint8_t pin, Analog_t type, float timeConst) : AnalogIn(pin, 
   }
 }
 
-void AnalogIn::handle()
+void AnalogIn::update()
 {
   int _raw = raw();
   _value = (_filterConst * _raw * (_raw >= 0 ? _scalePos : _scaleNeg)) + (1.0 - _filterConst) * _value;

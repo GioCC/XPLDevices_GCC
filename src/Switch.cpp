@@ -15,7 +15,7 @@ Switch::Switch(uint8_t nExp, uint8_t pin)
   pinMode(_pin, INPUT_PULLUP);
 }
 
-void Switch::handle()
+void Switch::update()
 {
   if (_debounce > 0)
   {
@@ -33,7 +33,7 @@ void Switch::handle()
   }
 }
 
-void Switch::processCommand()
+void Switch::trigger()
 {
   if (_transition)
   {
@@ -64,7 +64,7 @@ Switch2::Switch2(uint8_t nExp, uint8_t pin1, uint8_t pin2)
   }
 }
 
-void Switch2::handle()
+void Switch2::update()
 {
   if (_debounce > 0)
   {
@@ -133,7 +133,7 @@ int Switch2::getCommand()
   return res;
 }
 
-void Switch2::processCommand()
+void Switch2::trigger()
 {
   if (_transition)
   {

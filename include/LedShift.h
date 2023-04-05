@@ -40,7 +40,7 @@ public:
   void set_all(led_t mode) { setAll(mode); }; // obsolete
 
   /// @brief Real time handling, call cyclic in loop()
-  void handle();
+  void update();
 
 private:
   void _send();

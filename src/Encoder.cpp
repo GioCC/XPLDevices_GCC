@@ -28,7 +28,7 @@ Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, uint8_t pin3, EncPuls
 }
 
 // real time handling
-void Encoder::handle()
+void Encoder::update()
 {
   uint8_t newState = 0;
   // collect new state
@@ -125,7 +125,7 @@ int Encoder::getCommand(EncCmd_t cmd)
   }
 }
 
-void Encoder::processCommand()
+void Encoder::trigger()
 {
   if (up())
   {

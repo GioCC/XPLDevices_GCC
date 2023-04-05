@@ -154,7 +154,7 @@ bool DigitalIn_::getBit(uint8_t expander, uint8_t channel, bool direct)
 }
 
 // read all inputs together -> base for board specific optimization by using byte read
-void DigitalIn_::handle()
+void DigitalIn_::update()
 {
   // only if Mux Pins present
 #if MCP_MAX_NUMBER > 0  

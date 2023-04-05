@@ -23,7 +23,7 @@ public:
   void setAll(bool state);
 
   /// @brief Real time handling, call cyclic in loop()
-  void handle();
+  void update();
 
 private:
   void _send();

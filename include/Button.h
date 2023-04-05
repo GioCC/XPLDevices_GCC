@@ -20,11 +20,11 @@ public:
 
     /// @brief Handle realtime. Read input and evaluate any transitions.
     //virtual 
-    void handle(void);
+    void update(void);
 
     /// @brief Handle realtime and process XPLDirect commands
     //virtual 
-    void handleXP(void) { handle(); processCommand(); };
+    void process(void) { update(); trigger(); };
 
     /// @brief Evaluate and reset transition if button pressed down
     /// @return true: Button was pressed. Transition detected.
@@ -51,7 +51,7 @@ public:
     int  getCommand(void) { return _cmdPush; };
 
     /// @brief Process all transitions and active transitions to XPLDirect
-    void processCommand(void);
+    void trigger(void);
 
     using callback = void(*)(uint8_t);
 
@@ -95,12 +95,12 @@ public:
 
     /// @brief Handle realtime. Read input and evaluate any transitions.
     // virtual 
-    void handle(void); // override;
+    void update(void); // override;
 
     /// @brief Handle realtime and process XPLDirect commands
     // virtual 
-    void handleXP() //override
-        { handle(); processCommand(); };
+    void process() //override
+        { update(); trigger(); };
 
 protected:
     uint32_t _delay;

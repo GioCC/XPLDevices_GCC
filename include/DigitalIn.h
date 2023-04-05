@@ -59,7 +59,7 @@ public:
   bool getBit(uint8_t expander, uint8_t channel, bool direct = false);
   
   /// @brief Read all expander inputs into data cache; direct pins are not included (always read directly)
-  void handle();
+  void update();
 private:
   uint8_t _s0, _s1, _s2, _s3;
 #ifdef ARDUINO_ARCH_AVR

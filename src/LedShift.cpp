@@ -69,7 +69,7 @@ void LedShift::setAll(led_t mode)
   _update = true;
 }
 
-void LedShift::handle()
+void LedShift::update()
 {
   if (millis() >= _timer)
   {
