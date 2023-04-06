@@ -1,4 +1,3 @@
-#include <XPLDirect.h>
 #include "Switch.h"
 
 #ifndef DEBOUNCE_DELAY
@@ -45,7 +44,7 @@ void Switch::trigger()
     if (_transition) {
         int cmd = getCommand();
         if (cmd >= 0) {
-            XPLDirect::commandTrigger(getCommand());
+            if(onChange != nullptr) onChange(getCommand()); // XPLDirect::commandTrigger(getCommand());
         }
         _transition = false;
     }
@@ -128,7 +127,7 @@ int Switch2::getCommand()
 void Switch2::trigger()
 {
     if (_transition) {
-        XPLDirect::commandTrigger(getCommand());
+        if(onChange != nullptr) onChange(getCommand()); // XPLDirect::commandTrigger(getCommand());
         _transition = false;
     }
 }

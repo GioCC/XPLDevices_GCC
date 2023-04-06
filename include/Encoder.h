@@ -34,13 +34,13 @@ public:
     /// @param pin1 pin for Encoder A track
     /// @param pin2 pin for Encoder B track
     /// @param pulses Number of counts per mechanical notch
-    Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, EncPulse_t pulses);
+    Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, EncPulse_t pulses = enc1Pulse);
 
     /// @brief Constructor. Sets connected pins and number of counts per notch.
     /// @param pin1 pin for Encoder A track
     /// @param pin2 pin for Encoder B track
     /// @param pulses Number of counts per mechanical notch
-    Encoder(uint8_t pin1, uint8_t pin2, EncPulse_t pulses)
+    Encoder(uint8_t pin1, uint8_t pin2, EncPulse_t pulses = enc1Pulse)
         : Encoder(NOT_USED, pin1, pin2, pulses) {}
 
     /// @brief Set callback functions for encoder events.

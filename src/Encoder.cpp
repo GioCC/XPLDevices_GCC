@@ -1,4 +1,3 @@
-#include <XPLDirect.h>
 #include "Encoder.h"
 
 #ifndef DEBOUNCE_DELAY
