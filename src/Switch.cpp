@@ -15,14 +15,13 @@ void Switch::setCallbacks(callback cb_onChange)
     onChange = cb_onChange; 
 }
 
-Switch::Switch(uint8_t nExp, uint8_t pin)
+Switch::Switch(uint8_t nExp, uint8_t pin):
+_nExp {nExp}, _pin {pin}, _state {switchOff}, 
+_cmdOff (-1), _cmdOn (-1)
 {
-    _nExp   = nExp;
-    _pin    = pin;
-    _state  = switchOff;
-    _cmdOn  = -1;
-    _cmdOff = -1;
-    pinMode(_pin, INPUT_PULLUP);
+    if(nExp == NOT_USED) {
+        pinMode(_pin, INPUT_PULLUP);
+    }
 }
 
 void Switch::update()
@@ -61,15 +60,10 @@ void Switch2::setCallbacks(callback cb_onChange)
     onChange = cb_onChange; 
 }
 
-Switch2::Switch2(uint8_t nExp, uint8_t pin1, uint8_t pin2)
+Switch2::Switch2(uint8_t nExp, uint8_t pin1, uint8_t pin2):
+_nExp {nExp}, _pin1 {pin1}, _pin2 {pin2}, _state {switchOff}, 
+_cmdOff (-1), _cmdOn1 (-1), _cmdOn2 (-1)
 {
-    _nExp   = nExp;
-    _pin1   = pin1;
-    _pin2   = pin2;
-    _state  = switchOff;
-    _cmdOff = -1;
-    _cmdOn1 = -1;
-    _cmdOn2 = -1;
     if (_nExp == NOT_USED) {
         pinMode(_pin1, INPUT_PULLUP);
         pinMode(_pin2, INPUT_PULLUP);
