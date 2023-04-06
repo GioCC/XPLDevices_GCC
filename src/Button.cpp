@@ -17,14 +17,15 @@ void Button::setCallbacks(callback cb_onPush, callback cb_onRelease)
 
 
 // Buttons
-Button::Button(uint8_t nExp, uint8_t pin)
+Button::Button(uint8_t nExp, uint8_t pin):
+_nExp(nExp), _pin(pin), _state {0}, _transition {transNone}, _cmdPush {-1}, _autoTrigger{false}
 {
-    _nExp       = nExp;
-    _pin        = pin;
-    _state      = 0;
-    _transition = 0;
-    _cmdPush    = -1;
-    pinMode(_pin, INPUT_PULLUP);
+    if(nExp == NOT_USED) pinMode(_pin, INPUT_PULLUP);
+}
+
+void Button::setCommand(int cmdPush)
+{
+    _cmdPush = cmdPush;
 }
 
 void Button::update(void)
@@ -33,33 +34,31 @@ void Button::update(void)
         if (_state == 0) {
             _state      = DEBOUNCE_DELAY;
             _transition = transPressed;
+            if(_autoTrigger) {
+                if(onPush != nullptr) onPush(_cmdPush);
+            }
         }
     } else if (_state > 0) {
         if (--_state == 0) {
             _transition = transReleased;
+            if(_autoTrigger) {
+                if(onRelease != nullptr) onRelease(_cmdPush);
+            }
         }
     }
 }
 
-void Button::setCommand(int cmdPush)
-{
-    _cmdPush = cmdPush;
-}
-
-// Must be done explicitly
-// void Button::setCommand(XPString_t cmdNamePush)
-// {
-//     _cmdPush = XPLDirect::registerCommand(cmdNamePush);
-// }
-
 void Button::trigger(void)
 {
-    if (pressed()) {
-        if(onPush != nullptr) onPush(_cmdPush); //XPLDirect::commandStart(_cmdPush);
-    } else
-    if (released()) {
-        if(onRelease != nullptr) onRelease(_cmdPush); //XPLDirect::commandEnd(_cmdPush);
-    }
+    // Uncomment the "if" according to desired behaviour
+    // if(! _autoTrigger) {
+        if (pressed()) {
+            if(onPush != nullptr) onPush(_cmdPush); //XPLDirect::commandStart(_cmdPush);
+        } else
+        if (released()) {
+            if(onRelease != nullptr) onRelease(_cmdPush); //XPLDirect::commandEnd(_cmdPush);
+        }
+    // }
 }
 
 RepeatButton::RepeatButton(uint8_t nExp, uint8_t pin, uint32_t delay)

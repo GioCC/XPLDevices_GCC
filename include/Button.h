@@ -28,6 +28,10 @@ public:
     static 
     void setCallbacks(callback cb_onPush, callback cb_onRelease);
 
+    /// @brief Set auto trigger behaviour (default is off).
+    /// @param onOff True to activate
+    void setAutoTrigger(bool onOff) { _autoTrigger = onOff;  };
+
     /// @brief Handle realtime. Read input and evaluate any transitions.
     //virtual 
     void update(void);
@@ -66,22 +70,20 @@ public:
 protected:
 
     enum {
-        transNone,
-        transPressed,
-        transReleased
+        transNone = 0,
+        transPressed = 1,
+        transReleased = 2,
     };
 
     static callback onPush;
     static callback onRelease;
-
-    // static void (*onPush)(uint8_t cmdHandle);
-    // static void (*onRelease)(uint8_t cmdHandle);
 
     uint8_t _nExp;
     uint8_t _pin;
     uint8_t _state;
     uint8_t _transition;
     int     _cmdPush;
+    bool    _autoTrigger;
 };
 
 /// @brief Class for a simple pushbutton with debouncing and XPLDirect command handling,
