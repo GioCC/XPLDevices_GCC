@@ -54,6 +54,10 @@ public:
         // , callback cb_onFastUp, callback cb_onFastDown
     );
 
+    /// @brief Set auto trigger behaviour (default is off).
+    /// @param onOff True to activate
+    void setAutoTrigger(bool onOff) { _autoTrigger = onOff;  };
+
     /// @brief Handle realtime. Read input and evaluate any transitions.
     void update();
 
@@ -64,13 +68,15 @@ public:
     /// @return Remaining Encoder count.
     int16_t pos() { return _count; };
 
-    /// @brief Evaluate Encoder up one notch (positive turn) and consume event
+    /// @brief Evaluate Encoder up one notch (positive turn)
+    /// @param reset  Consume ONE event if true, otherwise just report
     /// @return true: up event available and transition reset.
-    bool    up() { return _count >= _pulses ? (_count -= _pulses, true) : false; };
+    bool    up(bool reset = true) { return _count >= _pulses ? ((reset ? _count -= _pulses : 0), true) : false; };
 
-    /// @brief Evaluate Encoder up down notch (negative turn) and consume event
+    /// @brief Evaluate Encoder up down notch (negative turn)
+    /// @param reset  Consume ONE event if true, otherwise just report
     /// @return true: up event available and transition reset.
-    bool    down() { return _count <= -_pulses ? (_count += _pulses, true) : false; };
+    bool    down(bool reset = true) { return _count <= -_pulses ? ((reset ? _count += _pulses : 0), true) : false; };
 
     /// @brief Set XPLDirect commands for Encoder events without push function
     /// @param cmdUp Command handle for positive turn as returned by XPLDirect::registerCommand()
@@ -88,7 +94,10 @@ public:
     int     getCommand(EncCmd_t cmd);
 
     /// @brief Check for Encoder events and process XPLDirect commands as appropriate
-    void    trigger();
+    ///        Beware: one call of trigger() only reports one encoder "click" event.
+    ///        If there are more, trigger() must be called repeatedly.
+    /// @return true if an events was found.
+    bool    trigger(void);
 
 private:
     static callback onUp;
@@ -98,9 +107,10 @@ private:
 
     uint8_t _nExp;
     uint8_t _pin1, _pin2;
-    int8_t  _count;
     uint8_t _pulses;
+    int8_t  _count;
     uint8_t _state;
+    bool    _autoTrigger;
     int     _cmdUp;
     int     _cmdDown;
 };

@@ -19,18 +19,14 @@ void Encoder::setCallbacks(callback cb_onUp, callback cb_onDown
     // onFastDown = cb_onFastDown;
 }
 
-Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, EncPulse_t pulses)
+Encoder::Encoder(uint8_t nExp, uint8_t pin1, uint8_t pin2, EncPulse_t pulses):
+_nExp(nExp), _pin1(pin1), _pin2(pin2), _pulses(pulses), 
+_count {0}, _state {0}, _autoTrigger {false}, _cmdUp {-1}, _cmdDown {-1}
 {
-    _nExp       = nExp;
-    _pin1       = pin1;
-    _pin2       = pin2;
-    _pulses     = pulses;
-    _count      = 0;
-    _state      = 0;
-    _cmdUp      = -1;
-    _cmdDown    = -1;
-    pinMode(_pin1, INPUT_PULLUP);
-    pinMode(_pin2, INPUT_PULLUP);
+    if(nExp == NOT_USED) {
+        pinMode(_pin1, INPUT_PULLUP);   
+        pinMode(_pin2, INPUT_PULLUP);
+    }
 }
 
 // real time handling
@@ -55,6 +51,10 @@ void Encoder::update()
     } else if (_state == 6 || _state == 9) {
         _count -= 2;
     }
+    // Opposite to buttons, encoders on autotrigger can't avoid consuming events
+    // ( a second "_count" variable would be required)
+    // so just call regular trigger()
+    if(_autoTrigger) trigger();
 }
 
 void Encoder::setCommand(int cmdUp, int cmdDown)
@@ -72,12 +72,16 @@ int Encoder::getCommand(EncCmd_t cmd)
     return -1;
 }
 
-void Encoder::trigger()
+bool Encoder::trigger(void)
 {
+    bool res = true;
     if (up()) {
         if(onUp != nullptr) onUp(_cmdUp); // XPLDirect::commandTrigger(_cmdUp);
     } else
     if (down()) {
         if(onDown != nullptr) onDown(_cmdDown); // XPLDirect::commandTrigger(_cmdDown);
+    } else {
+        res = false;
     }
+    return res;
 }
