@@ -11,7 +11,7 @@
 
 #include <Timer.h>
 #include <DigitalIn.h>
-#include <XPLDirect.h>
+#include <XPLDirect_ns.h>
 
 #ifdef USE_BUTTONS
     #include <Button.h>

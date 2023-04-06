@@ -1,9 +1,10 @@
 ﻿/*
-  XPLDirect.h - Library for serial interface to Xplane SDK.
+  XPLDirect_ns.h - Library for serial interface to Xplane SDK.
   Created by Michael Gerlicher,  September 2020.
   To report problems, download updates and examples, suggest enhancements or get technical support, please visit my patreon page:
      www.patreon.com/curiosityworkshop
   Stripped down to Minimal Version by mrusk, February 2023
+  Converted to namespace GCC 2023-04
 */
 
 #ifndef XPLDirect_h

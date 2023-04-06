@@ -1,11 +1,12 @@
 /*
-  XPLDirect.cpp
+  XPLDirect_ns.cpp
   Created by Michael Gerlicher, September 2020.
   Modified by mrusk, March 2023
+  Converted to namespace GCC 2023-04
 */
 
 #include <Arduino.h>
-#include "XPLDirect.h"
+#include "XPLDirect_ns.h"
 
 namespace XPLDirect
 {
