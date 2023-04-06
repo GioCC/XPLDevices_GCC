@@ -448,7 +448,7 @@ namespace XPLDirect
         return _allDataRefsRegistered;
     }
 
-    int registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, long int *value)
+    int registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, long int *value)
     {
         if (_dataRefsCount >= XPLDIRECT_MAXDATAREFS_ARDUINO) {
             return -1; // Error
@@ -468,7 +468,7 @@ namespace XPLDirect
         return (_dataRefsCount - 1);
     }
 
-    int registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, long int *value, int index)
+    int registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, long int *value, int index)
     {
         if (_dataRefsCount >= XPLDIRECT_MAXDATAREFS_ARDUINO) {
             return -1;
@@ -488,7 +488,7 @@ namespace XPLDirect
         return (_dataRefsCount - 1);
     }
 
-    int registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, float *value)
+    int registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, float *value)
     {
         if (_dataRefsCount >= XPLDIRECT_MAXDATAREFS_ARDUINO) {
             return -1;
@@ -508,7 +508,7 @@ namespace XPLDirect
         return (_dataRefsCount - 1);
     }
 
-    int registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, float *value, int index)
+    int registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, float *value, int index)
     {
         if (_dataRefsCount >= XPLDIRECT_MAXDATAREFS_ARDUINO) {
             return -1;
@@ -527,7 +527,7 @@ namespace XPLDirect
         return (_dataRefsCount - 1);
     }
 
-    int registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, char *value)
+    int registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, char *value)
     {
         if (_dataRefsCount >= XPLDIRECT_MAXDATAREFS_ARDUINO) {
             return -1;
@@ -546,7 +546,7 @@ namespace XPLDirect
         return (_dataRefsCount - 1);
     }
 
-    int registerCommand(XPString_t *commandName) // user will trigger commands with commandTrigger
+    int registerCommand(XPString_t commandName) // user will trigger commands with commandTrigger
     {
         if (_commandsCount >= XPLDIRECT_MAXCOMMANDS_ARDUINO) {
             return -1;

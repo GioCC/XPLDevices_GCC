@@ -47,7 +47,7 @@ public:
 
     // /// @brief Set XPLDirect commands for Switch events (command only for on position)
     // /// @param cmdNameOn Command for Switch moved to on
-    // void setCommand(XPString_t *cmdNameOn)
+    // void setCommand(XPString_t cmdNameOn)
     // {
     //     _cmdOn  = XPLDirect::registerCommand(cmdNameOn);
     //     _cmdOff = -1;
@@ -61,7 +61,7 @@ public:
     // /// @brief Set XPLDirect commands for Switch events
     // /// @param cmdNameOn Command for Switch moved to on
     // /// @param cmdNameOff Command for Switch moved to off
-    // void setCommand(XPString_t *cmdNameOn, XPString_t *cmdNameOff)
+    // void setCommand(XPString_t cmdNameOn, XPString_t cmdNameOff)
     // {
     //     _cmdOn  = XPLDirect::registerCommand(cmdNameOn);
     //     _cmdOff = XPLDirect::registerCommand(cmdNameOff);
@@ -156,7 +156,7 @@ public:
     // /// @brief Set XPLDirect commands for Switch events in cases only up/down commands are to be used
     // /// @param cmdNameUp Command for Switch moved from on1 to off or from off to on2 on
     // /// @param cmdNameDown Command for Switch moved from on2 to off or from off to on1
-    // void setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown)
+    // void setCommand(XPString_t cmdNameUp, XPString_t cmdNameDown)
     // {
     //     _cmdOn1 = XPLDirect::registerCommand(cmdNameUp);
     //     _cmdOff = XPLDirect::registerCommand(cmdNameDown);
@@ -178,7 +178,7 @@ public:
     // /// @param cmdNameOn1 Command for Switch moved to on1 position
     // /// @param cmdNameOff Command for Switch moved to off position
     // /// @param cmdNameOn2 Command for Switch moved to on2 position
-    // void setCommand(XPString_t *cmdNameOn1, XPString_t *cmdNameOff, XPString_t *cmdNameOn2)
+    // void setCommand(XPString_t cmdNameOn1, XPString_t cmdNameOff, XPString_t cmdNameOn2)
     // {
     //     _cmdOn1 = XPLDirect::registerCommand(cmdNameOn1);
     //     _cmdOff = XPLDirect::registerCommand(cmdNameOff);

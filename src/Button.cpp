@@ -47,7 +47,7 @@ void Button::setCommand(int cmdPush)
 }
 
 // Must be done explicitly
-// void Button::setCommand(XPString_t *cmdNamePush)
+// void Button::setCommand(XPString_t cmdNamePush)
 // {
 //     _cmdPush = XPLDirect::registerCommand(cmdNamePush);
 // }

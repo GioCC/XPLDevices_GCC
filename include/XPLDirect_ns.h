@@ -23,9 +23,10 @@
 #define XPLDIRECT_RX_TIMEOUT 500 // after detecting a frame header, how long will we wait to receive the rest of the frame.  (default 500)
 
 #ifndef XPLMAX_PACKETSIZE
-    #define XPLMAX_PACKETSIZE 80 // Probably leave this alone. If you need a few extra bytes of RAM it could be reduced, but it needs to
-                                 // be as long as the longest dataref name + 10.  If you are using datarefs
-                                 // that transfer strings it needs to be big enough for those too. (default 200)
+    // Probably leave this alone. If you need a few extra bytes of RAM it could be reduced, but it needs to
+    // be as long as the longest dataref name + 10.  If you are using datarefs
+    // that transfer strings it needs to be big enough for those too. (default 200)
+    #define XPLMAX_PACKETSIZE 80 
 #endif
 
 #ifndef XPL_USE_PROGMEM
@@ -38,9 +39,9 @@
 
 #ifdef XPL_USE_PROGMEM
 // use Flash for strings, requires F() macro for strings in all registration calls
-typedef const __FlashStringHelper XPString_t;
+using XPString_t = const __FlashStringHelper*;
 #else
-typedef const char XPString_t;
+using XPString_t = const char*;
 #endif
 
 #define XPLDIRECT_BAUDRATE      115200  // don't mess with this, it needs to match the plugin which won't change
@@ -93,12 +94,12 @@ namespace XPLDirect
     int  commandEnd(int commandHandle);
     int  datarefsUpdated();      // returns true if xplane has updated any datarefs since last call to datarefsUpdated()
     int  hasUpdated(int handle); // returns true if xplane has updated this dataref since last call to hasUpdated()
-    int  registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, long int *value);
-    int  registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, long int *value, int index);
-    int  registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, float *value);
-    int  registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, float divider, float *value, int index);
-    int  registerDataRef(XPString_t *datarefName, int rwmode, unsigned int rate, char *value);
-    int  registerCommand(XPString_t *commandName);
+    int  registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, long int *value);
+    int  registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, long int *value, int index);
+    int  registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, float *value);
+    int  registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, float divider, float *value, int index);
+    int  registerDataRef(XPString_t datarefName, int rwmode, unsigned int rate, char *value);
+    int  registerCommand(XPString_t commandName);
     int  sendDebugMessage(const char *msg);
     int  sendSpeakMessage(const char *msg);
     int  allDataRefsRegistered(void);
@@ -134,7 +135,7 @@ namespace XPLDirect
         byte          forceUpdate;    // in case xplane plugin asks for a refresh
         unsigned long updateRate;     // maximum update rate in milliseconds, 0 = every change
         unsigned long lastUpdateTime;
-        XPString_t   *dataRefName;
+        XPString_t    dataRefName;
         void         *latestValue;
         union {
             long int lastSentIntValue;
@@ -146,7 +147,7 @@ namespace XPLDirect
     // int _commandsCount;
     struct _commandStructure {
         int         commandHandle;
-        XPString_t *commandName;
+        XPString_t  commandName;
     };
     //   *_commands[XPLDIRECT_MAXCOMMANDS_ARDUINO];
     // byte _allDataRefsRegistered; // becomes true if all datarefs have been registered

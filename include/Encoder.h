@@ -77,6 +77,11 @@ public:
     /// @param cmdDown Command handle for negative turn as returned by XPLDirect::registerCommand()
     void    setCommand(int cmdUp, int cmdDown);
 
+    // /// @brief Set XPLDirect commands for Encoder events
+    // /// @param cmdNameUp Command for positive turn
+    // /// @param cmdNameDown Command for negative turn
+    // void    setCommand(XPString_t *cmdNameUp, XPString_t *cmdNameDown);
+
     /// @brief Get XPLDirect command assiciated with the selected event
     /// @param cmd Event to read out (encCmdUp, encCmdDown, encCmdPush)
     /// @return Handle of the command, -1 = no command

@@ -32,9 +32,17 @@
     #include <AnalogIn.h>
 #endif
 
+#define SET_CMD1(dev, cmd)          do { dev.setCommand(XPLDirect::registerCommand(cmd)); } while(0);
+#define SET_CMD2(dev, cmd1, cmd2)   do { dev.setCommand(XPLDirect::registerCommand(cmd1), XPLDirect::registerCommand(cmd2)); } while(0);
+#define SET_CMD3(dev, cmd1, cmd2, cmd3) \
+   do { dev.setCommand(XPLDirect::registerCommand(cmd1), \
+                       XPLDirect::registerCommand(cmd2), \
+                       XPLDirect::registerCommand(cmd3) ); \
+    } while(0);
+
+
 namespace XPLDevices
 {
-
     void Init(void)
     {
 

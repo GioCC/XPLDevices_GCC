@@ -54,7 +54,7 @@ public:
 
     // /// @brief Set XPLDirect command for Button events
     // /// @param cmdNamePush Command name to register
-    // void setCommand(XPString_t *cmdNamePush);
+    // void setCommand(XPString_t cmdNamePush);
 
     /// @brief Get XPLDirect command associated with Button
     /// @return Handle of the command
